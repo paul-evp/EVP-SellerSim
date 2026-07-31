@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { X, ChevronRight } from "lucide-react";
+import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,19 +14,42 @@ interface NavDrawerProps {
   onClose: () => void;
 }
 
-const navSections = [
-  "Catalog",
-  "Inventory",
-  "Pricing",
-  "Orders",
-  "Advertising",
-  "Stores",
-  "Growth",
-  "Brands",
-  "Reports & Analytics",
-  "Payments",
-  "Performance",
-  "Settings",
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+interface NavSection {
+  label: string;
+  items: NavItem[];
+}
+
+const navConfig: NavSection[] = [
+  {
+    label: "Catalog",
+    items: [
+      { label: "Manage All Listings", href: "/catalog/listings" },
+      { label: "Add a Product", href: "/catalog/add-product" },
+    ],
+  },
+  {
+    label: "Inventory",
+    items: [
+      { label: "Manage Inventory", href: "/inventory/manage" },
+      { label: "FBA Shipments", href: "/inventory/fba-shipments" },
+      { label: "Restock Recommendations", href: "/inventory/restock" },
+    ],
+  },
+  { label: "Pricing", items: [] },
+  { label: "Orders", items: [] },
+  { label: "Advertising", items: [] },
+  { label: "Stores", items: [] },
+  { label: "Growth", items: [] },
+  { label: "Brands", items: [] },
+  { label: "Reports & Analytics", items: [] },
+  { label: "Payments", items: [] },
+  { label: "Performance", items: [] },
+  { label: "Settings", items: [] },
 ];
 
 export function NavDrawer({ isOpen, onClose }: NavDrawerProps) {
@@ -49,7 +74,7 @@ export function NavDrawer({ isOpen, onClose }: NavDrawerProps) {
             exit={{ x: "-100%" }}
             transition={{ type: "tween", duration: 0.3 }}
             className="fixed top-0 left-0 bottom-0 w-80 z-50 overflow-y-auto"
-            style={{ backgroundColor: '#232F3E' }}
+            style={{ backgroundColor: "#232F3E" }}
             data-testid="nav-drawer"
           >
             {/* Header */}
@@ -68,18 +93,36 @@ export function NavDrawer({ isOpen, onClose }: NavDrawerProps) {
 
             {/* Navigation Sections */}
             <div className="py-2">
-              {navSections.map((section, idx) => (
-                <div key={section} className="border-b border-white/10">
+              {navConfig.map((section, idx) => (
+                <div key={section.label} className="border-b border-white/10">
                   <Collapsible>
                     <CollapsibleTrigger
                       className="w-full flex items-center justify-between px-4 py-3 text-white hover:bg-white/10 transition-colors text-left"
                       data-testid={`nav-section-${idx}`}
                     >
-                      <span className="text-sm font-medium">{section}</span>
+                      <span className="text-sm font-medium">{section.label}</span>
                       <ChevronRight className="w-4 h-4 transition-transform group-data-[state=open]:rotate-90" />
                     </CollapsibleTrigger>
-                    <CollapsibleContent className="px-4 py-2">
-                      <p className="text-sm text-white/60">Subsections coming soon</p>
+                    <CollapsibleContent className="py-2">
+                      {section.items.length > 0 ? (
+                        <div>
+                          {section.items.map((item, itemIdx) => (
+                            <Link
+                              key={itemIdx}
+                              href={item.href}
+                              className="block w-full text-left px-6 py-2 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                              onClick={onClose}
+                              data-testid={`nav-link-${section.label.toLowerCase()}-${itemIdx}`}
+                            >
+                              {item.label}
+                            </Link>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="px-6 text-sm text-white/60">
+                          Subsections coming soon
+                        </p>
+                      )}
                     </CollapsibleContent>
                   </Collapsible>
                 </div>
