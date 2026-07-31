@@ -1,0 +1,52 @@
+I'm building an educational simulator of Amazon Seller Central for training new
+sellers and VAs. It needs to LOOK and BEHAVE like the real thing closely enough
+to be useful for practice, but every number and record is fake sample data —
+no real Amazon integration.
+
+Tech stack: React + Vite, Tailwind CSS, shadcn/ui components, React Router.
+
+Build the app shell first — nothing else yet:
+
+1. Top bar: Amazon-style dark navy bar with a logo placeholder text "Seller
+   Central (Training Mode)", a store/account switcher dropdown (fake stores:
+   "Acme Home Goods", "Trailhead Outdoors"), a notifications bell with a badge
+   count, and a user menu (avatar + name "Training Account").
+
+2. Left navigation via a collapsible hamburger menu (not always-open sidebar —
+   toggled by a hamburger icon in the top bar), containing these top-level
+   sections, each expandable to reveal subsections (leave subsections empty
+   for now, just the section headers, collapsed by default):
+   - Catalog
+   - Inventory
+   - Pricing
+   - Orders
+   - Advertising
+   - Stores
+   - Growth
+   - Brands
+   - Reports & Analytics
+   - Payments
+   - Performance
+   - Settings
+
+3. A "Learn" ribbon/callout component (reusable) that I'll place at the top of
+   every subpage — a dismissible light-blue banner with an icon, a short
+   explainer of what that page does in real Seller Central, and a "Why this
+   matters" one-liner. Build it as a standalone component now so I can drop it
+   into every page later.
+
+4. Home dashboard as the landing page: a KPI card row (Sales Today, Units
+   Ordered, Orders Awaiting Shipment, Account Health score with a color
+   status), a fake sales trend chart, and a "Tasks & Alerts" panel with 3-4
+   sample alerts (e.g. "2 listings need attention", "IPI score updated").
+
+5. Establish a reusable design system now: a data table component with
+   sortable headers, status badges (green/yellow/red pill style matching
+   Amazon's), a card component, and a page-header component with title +
+   breadcrumb. I will ask you to reuse these exact components in every future
+   prompt — do not create new one-off styles per page.
+
+Do not build out Catalog, Inventory, Pricing, Orders, etc. content yet — just
+the shell, the hamburger nav with empty expandable sections, the Learn
+banner component, the dashboard, and the base design system. Confirm what
+component names/files you created so I can reference them in later prompts.
