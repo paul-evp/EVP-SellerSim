@@ -78,7 +78,7 @@ export default function FbaShipments() {
                 </div>
 
                 <div className="bg-amber-50 border border-amber-200 p-3 rounded text-sm">
-                  This is a training simulation. In real Seller Central, this process
+                  This is a workspace simulation. In a live seller account, this process
                   takes 20–45 minutes and requires a printer for FNSKU and box labels.
                 </div>
 

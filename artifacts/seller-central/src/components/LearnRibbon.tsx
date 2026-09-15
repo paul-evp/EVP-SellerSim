@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GraduationCap, X } from "lucide-react";
+import { BookOpen, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -24,7 +24,7 @@ export function LearnRibbon({ title, description, whyItMatters, className }: Lea
           className={cn("overflow-hidden", className)}
         >
           <div
-            className="bg-blue-50 border-l-4 border-blue-500 p-4 relative"
+            className="relative border border-[#c8dce0] border-l-4 border-l-[#2d8190] bg-[#f3f8f8] p-4"
             data-testid="learn-ribbon"
           >
             <button
@@ -37,16 +37,12 @@ export function LearnRibbon({ title, description, whyItMatters, className }: Lea
 
             <div className="flex gap-4">
               <div className="flex-shrink-0">
-                <GraduationCap className="w-6 h-6 text-blue-600" />
+               <BookOpen className="w-6 h-6 text-[#2d8190]" />
               </div>
 
               <div className="flex-1 pr-8">
-                <div className="inline-block bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded mb-2 uppercase tracking-wide">
-                  Training Mode
-                </div>
-
-                <h3 className="text-base font-bold text-gray-900 mb-2">
-                  What is {title}?
+                 <h3 className="text-base font-bold text-slate-900 mb-2">
+                   Workspace guide: {title}
                 </h3>
 
                 <p className="text-sm text-gray-700 mb-3">{description}</p>

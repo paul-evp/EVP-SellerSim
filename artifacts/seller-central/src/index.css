@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
@@ -78,29 +79,29 @@
   --elevate-1: rgba(0, 0, 0, 0.03);
   --elevate-2: rgba(0, 0, 0, 0.08);
 
-  --background: 0 0% 95.3%; /* Light gray #F3F3F3 */
+  --background: 210 18% 94%;
 
-  --foreground: 0 0% 13%; /* Dark text */
+  --foreground: 213 28% 19%;
 
-  --border: 0 0% 85%; /* Light border */
+  --border: 210 15% 83%;
 
-  --card: 0 0% 100%; /* White */
+  --card: 0 0% 100%;
 
-  --card-foreground: 0 0% 13%;
+  --card-foreground: 213 28% 19%;
 
-  --card-border: 0 0% 90%;
+  --card-border: 210 16% 86%;
 
-  --sidebar: 210 24% 16%; /* Amazon sidebar #232F3E */
+  --sidebar: 212 33% 17%;
 
   --sidebar-foreground: 0 0% 95%;
 
-  --sidebar-border: 210 24% 20%;
+  --sidebar-border: 212 28% 25%;
 
-  --sidebar-primary: 207 72% 32%; /* Amazon blue #146EB4 */
+  --sidebar-primary: 193 77% 40%;
 
   --sidebar-primary-foreground: 0 0% 100%;
 
-  --sidebar-accent: 210 24% 22%;
+  --sidebar-accent: 212 29% 24%;
 
   --sidebar-accent-foreground: 0 0% 100%;
 
@@ -112,19 +113,19 @@
 
   --popover-border: 0 0% 85%;
 
-  --primary: 207 72% 32%; /* Amazon blue #146EB4 */
+  --primary: 193 77% 33%;
 
   --primary-foreground: 0 0% 100%;
 
-  --secondary: 0 0% 96%;
+  --secondary: 210 20% 92%;
 
   --secondary-foreground: 0 0% 13%;
 
-  --muted: 0 0% 96%;
+  --muted: 210 18% 92%;
 
-  --muted-foreground: 0 0% 45%;
+  --muted-foreground: 213 12% 46%;
 
-  --accent: 38 100% 50%; /* Amazon orange for accents */
+  --accent: 25 88% 54%;
 
   --accent-foreground: 0 0% 13%;
 
@@ -133,17 +134,17 @@
   --destructive-foreground: 0 0% 100%;
 
   --input: 0 0% 85%;
-  --ring: 207 72% 32%;
-  --chart-1: 207 72% 32%; /* Amazon blue */
-  --chart-2: 38 100% 50%; /* Orange */
+  --ring: 193 77% 33%;
+  --chart-1: 193 77% 33%;
+  --chart-2: 25 88% 54%;
   --chart-3: 142 71% 45%; /* Green */
   --chart-4: 262 52% 47%; /* Purple */
   --chart-5: 0 72% 51%; /* Red */
 
-  --app-font-sans: 'Amazon Ember', Arial, sans-serif;
+  --app-font-sans: 'DM Sans', ui-sans-serif, sans-serif;
   --app-font-serif: Georgia, serif;
-  --app-font-mono: Menlo, monospace;
-  --radius: 0.5rem; /* 8px */
+  --app-font-mono: 'Space Mono', ui-monospace, monospace;
+  --radius: 0.35rem;
   --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0); /*replace with H S L */
   --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0); /*replace with H S L */
   --shadow-sm:
