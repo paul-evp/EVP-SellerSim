@@ -1,6 +1,6 @@
-# Amazon Seller Central Simulator
+# SellerSim
 
-An interactive Amazon Seller Central-style dashboard simulator for exploring seller operations, inventory, pricing, advertising, orders, reports, payments, and account health.
+An interactive seller-operations dashboard simulator for exploring inventory, pricing, advertising, orders, reports, payments, and account health.
 
 ## Run & Operate
 
@@ -37,11 +37,11 @@ _Populate as you build — non-obvious choices a reader couldn't infer from the 
 
 ## Product
 
-The simulator reproduces a seller operations workspace with navigation across catalog, inventory, pricing, advertising, orders, reports, payments, performance, growth, brands, and settings.
+The simulator provides a seller-operations workspace with navigation across catalog, inventory, pricing, advertising, orders, reports, payments, performance, growth, brands, and settings.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+Naming: this app must never reference Amazon, Amazon Seller Central, or Seller Central by name, anywhere — not in UI copy, code comments, variable/component names, file names, replit.md, or any other project file. This is an original app inspired by common patterns in marketplace seller dashboards generally, not a replica or clone of any specific real product. Use generic terms instead: "the platform", "the marketplace", "fulfillment center" (not "Amazon"/"FBA"), "product ID" (not "ASIN"), "Sponsored Listings" (not "Sponsored Products"), etc. Do not reintroduce these terms in future edits, refactors, or auto-generated documentation, even if older code or docs elsewhere in the repo still contain them.
 
 ## Gotchas
 
