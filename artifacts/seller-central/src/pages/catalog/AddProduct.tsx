@@ -353,65 +353,43 @@ function ListingBuilder({
   const [description, setDescription] = useState("");
   const [bulletPoints, setBulletPoints] = useState<string[]>(() => Array.from({ length: 5 }, () => ""));
   const [imageNames, setImageNames] = useState<string[]>(() => Array.from({ length: 9 }, () => ""));
-  const [ageRangeDescription, setAgeRangeDescription] = useState("Adult");
-  const [material, setMaterial] = useState("Ceramic");
-  const [materialPattern, setMaterialPattern] = useState("Solid");
-  const [packagePattern, setPackagePattern] = useState("Solid");
-  const [numberOfItems, setNumberOfItems] = useState("1");
+  const [ageRangeDescription, setAgeRangeDescription] = useState("");
+  const [material, setMaterial] = useState("");
+  const [materialPattern, setMaterialPattern] = useState("");
+  const [packagePattern, setPackagePattern] = useState("");
+  const [numberOfItems, setNumberOfItems] = useState("");
   const [subjectCharacter, setSubjectCharacter] = useState("");
-  const [color, setColor] = useState("White");
-  const [size, setSize] = useState("12 Ounces");
-  const [itemShape, setItemShape] = useState("Round");
-  const [themes, setThemes] = useState<string[]>(["Classic", "Everyday"]);
-  const [careInstructions, setCareInstructions] = useState<string[]>([
-    "Dishwasher Safe",
-    "Microwave Safe",
-  ]);
-  const [dishwasherSafe, setDishwasherSafe] = useState("Yes");
-  const [materialFeatures, setMaterialFeatures] = useState<string[]>([
-    "Dishwasher Safe",
-    "Microwave Safe",
-  ]);
-  const [microwaveable, setMicrowaveable] = useState("Yes");
-  const [materialType, setMaterialType] = useState("Ceramic");
-  const [capacity, setCapacity] = useState("12");
-  const [capacityUnit, setCapacityUnit] = useState("fluid-ounces");
-  const [customerPackageType, setCustomerPackageType] = useState("Standard Packaging");
-  const [finishType, setFinishType] = useState("Glazed");
-  const [unitCount, setUnitCount] = useState("1");
-  const [unitCountType, setUnitCountType] = useState("count");
-  const [includedComponents, setIncludedComponents] = useState<string[]>([
-    "1 Ceramic Coffee Mug",
-  ]);
-  const [specificUses, setSpecificUses] = useState<string[]>([
-    "Coffee",
-    "Tea",
-    "Hot Chocolate",
-    "Home Use",
-    "Office Use",
-  ]);
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
+  const [itemShape, setItemShape] = useState("");
+  const [themes, setThemes] = useState<string[]>([""]);
+  const [careInstructions, setCareInstructions] = useState<string[]>([""]);
+  const [dishwasherSafe, setDishwasherSafe] = useState("");
+  const [materialFeatures, setMaterialFeatures] = useState<string[]>([""]);
+  const [microwaveable, setMicrowaveable] = useState("");
+  const [materialType, setMaterialType] = useState("");
+  const [capacity, setCapacity] = useState("");
+  const [capacityUnit, setCapacityUnit] = useState("");
+  const [customerPackageType, setCustomerPackageType] = useState("");
+  const [finishType, setFinishType] = useState("");
+  const [unitCount, setUnitCount] = useState("");
+  const [unitCountType, setUnitCountType] = useState("");
+  const [includedComponents, setIncludedComponents] = useState<string[]>([""]);
+  const [specificUses, setSpecificUses] = useState<string[]>([""]);
   const [teamName, setTeamName] = useState("");
-  const [recommendedUses, setRecommendedUses] = useState<string[]>([
-    "Coffee",
-    "Tea",
-    "Hot Chocolate",
-    "Beverages",
-    "Home Use",
-    "Office Use",
-    "Coffee Station",
-  ]);
-  const [embellishmentFeature, setEmbellishmentFeature] = useState("None");
-  const [reusability, setReusability] = useState("Reusable");
+  const [recommendedUses, setRecommendedUses] = useState<string[]>([""]);
+  const [embellishmentFeature, setEmbellishmentFeature] = useState("");
+  const [reusability, setReusability] = useState("");
   const [heightBaseToTop, setHeightBaseToTop] = useState("");
-  const [heightUnit, setHeightUnit] = useState("inches");
-  const [widthWidestPoint, setWidthWidestPoint] = useState("3.5");
-  const [widthUnit, setWidthUnit] = useState("inches");
-  const [drinkingCupFormType, setDrinkingCupFormType] = useState("Coffee Cup");
+  const [heightUnit, setHeightUnit] = useState("");
+  const [widthWidestPoint, setWidthWidestPoint] = useState("");
+  const [widthUnit, setWidthUnit] = useState("");
+  const [drinkingCupFormType, setDrinkingCupFormType] = useState("");
   const [drinkingCupFormSubtype, setDrinkingCupFormSubtype] = useState("");
-  const [hasHandle, setHasHandle] = useState("Yes");
-  const [numberOfPacks, setNumberOfPacks] = useState("1");
-  const [itemWeight, setItemWeight] = useState("1");
-  const [itemWeightUnit, setItemWeightUnit] = useState("pounds");
+  const [hasHandle, setHasHandle] = useState("");
+  const [numberOfPacks, setNumberOfPacks] = useState("");
+  const [itemWeight, setItemWeight] = useState("");
+  const [itemWeightUnit, setItemWeightUnit] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [complianceNote, setComplianceNote] = useState("");
