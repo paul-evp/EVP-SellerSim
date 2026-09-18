@@ -87,6 +87,192 @@ function ReferenceCard({
   );
 }
 
+const attributeControlClass =
+  "h-9 rounded-none border-[#b8c4c8] bg-white text-[11px] text-[#344650]";
+
+function AttributeRow({
+  label,
+  description,
+  required = false,
+  children,
+}: {
+  label: string;
+  description: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="grid gap-2 border-b border-[#dfe6e8] py-4 last:border-b-0 lg:grid-cols-[minmax(0,0.78fr)_minmax(320px,1.22fr)] lg:gap-8">
+      <div>
+        <p className="text-xs font-semibold text-[#344650]">
+          {required && <span className="mr-1 text-[#148b9a]">*</span>}
+          {label}
+          <span className="ml-1 text-[9px] font-normal text-[#95a1a6]">Feedback</span>
+        </p>
+        <p className="mt-1 text-[10px] leading-4 text-[#68767e]">{description}</p>
+      </div>
+      <div className="min-w-0">{children}</div>
+    </div>
+  );
+}
+
+function AttributeSelect({
+  id,
+  value,
+  onChange,
+  options,
+  placeholder,
+}: {
+  id: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: Array<{ value: string; label: string }>;
+  placeholder?: string;
+}) {
+  return (
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger id={id} className={attributeControlClass} data-testid={`select-${id}`}>
+        <SelectValue placeholder={placeholder ?? "Select an option"} />
+      </SelectTrigger>
+      <SelectContent>
+        {options.map((option) => (
+          <SelectItem key={option.value} value={option.value}>
+            {option.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+}
+
+function AttributeInput({
+  id,
+  value,
+  onChange,
+  placeholder,
+  multiline = false,
+}: {
+  id: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  multiline?: boolean;
+}) {
+  if (multiline) {
+    return (
+      <Textarea
+        id={id}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+        rows={3}
+        className="min-h-[72px] resize-y rounded-none border-[#b8c4c8] bg-white text-[11px]"
+        data-testid={`textarea-${id}`}
+      />
+    );
+  }
+
+  return (
+    <Input
+      id={id}
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+      placeholder={placeholder}
+      className={attributeControlClass}
+      data-testid={`input-${id}`}
+    />
+  );
+}
+
+function MultiValueField({
+  id,
+  values,
+  onChange,
+}: {
+  id: string;
+  values: string[];
+  onChange: (values: string[]) => void;
+}) {
+  return (
+    <div className="space-y-2">
+      {values.map((value, index) => (
+        <Input
+          key={`${id}-${index}`}
+          id={`${id}-${index + 1}`}
+          value={value}
+          onChange={(event) =>
+            onChange(values.map((current, valueIndex) => (valueIndex === index ? event.target.value : current)))
+          }
+          className={attributeControlClass}
+          data-testid={`input-${id}-${index + 1}`}
+        />
+      ))}
+      <div className="flex items-center gap-2 text-[10px]">
+        <button
+          type="button"
+          onClick={() => onChange([...values, ""])}
+          className="font-semibold text-[#24717d] hover:underline"
+          data-testid={`button-add-${id}`}
+        >
+          Add more
+        </button>
+        {values.length > 1 && (
+          <>
+            <span className="text-[#aeb8bc]">|</span>
+            <button
+              type="button"
+              onClick={() => onChange(values.slice(0, -1))}
+              className="font-semibold text-[#24717d] hover:underline"
+              data-testid={`button-remove-${id}`}
+            >
+              Remove last
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function YesNoField({
+  id,
+  value,
+  onChange,
+}: {
+  id: string;
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <div
+      className="divide-y divide-[#cbd5cf] border border-[#d4ded4] bg-[#f1f3ee]"
+      role="radiogroup"
+      aria-label={id}
+      data-testid={`radio-group-${id}`}
+    >
+      {["Yes", "No"].map((option) => (
+        <button
+          key={option}
+          type="button"
+          role="radio"
+          aria-checked={value === option}
+          onClick={() => onChange(option)}
+          className="flex w-full items-center gap-2 px-2 py-2 text-left text-[11px] text-[#344650] hover:bg-[#e8eee7]"
+        >
+          <span
+            className={`flex h-3 w-3 items-center justify-center rounded-full border ${
+              value === option ? "border-[#247f8e]" : "border-[#77898d]"
+            }`}
+          >
+            {value === option && <span className="h-1.5 w-1.5 rounded-full bg-[#247f8e]" />}
+          </span>
+          {option}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 type ListingSection = "identity" | "description" | "details" | "offer" | "compliance";
 
 const listingSections: Array<{
@@ -96,7 +282,7 @@ const listingSections: Array<{
 }> = [
   { id: "identity", label: "Product Identity", required: 4 },
   { id: "description", label: "Description", required: 1 },
-  { id: "details", label: "Product details", required: 3 },
+  { id: "details", label: "Product Details", required: 21 },
   { id: "offer", label: "Offer", required: 2 },
   { id: "compliance", label: "Safety and compliance", required: 1 },
 ];
@@ -167,9 +353,65 @@ function ListingBuilder({
   const [description, setDescription] = useState("");
   const [bulletPoints, setBulletPoints] = useState<string[]>(() => Array.from({ length: 5 }, () => ""));
   const [imageNames, setImageNames] = useState<string[]>(() => Array.from({ length: 9 }, () => ""));
-  const [brand, setBrand] = useState("");
-  const [material, setMaterial] = useState("");
-  const [color, setColor] = useState("");
+  const [ageRangeDescription, setAgeRangeDescription] = useState("Adult");
+  const [material, setMaterial] = useState("Ceramic");
+  const [materialPattern, setMaterialPattern] = useState("Solid");
+  const [packagePattern, setPackagePattern] = useState("Solid");
+  const [numberOfItems, setNumberOfItems] = useState("1");
+  const [subjectCharacter, setSubjectCharacter] = useState("");
+  const [color, setColor] = useState("White");
+  const [size, setSize] = useState("12 Ounces");
+  const [itemShape, setItemShape] = useState("Round");
+  const [themes, setThemes] = useState<string[]>(["Classic", "Everyday"]);
+  const [careInstructions, setCareInstructions] = useState<string[]>([
+    "Dishwasher Safe",
+    "Microwave Safe",
+  ]);
+  const [dishwasherSafe, setDishwasherSafe] = useState("Yes");
+  const [materialFeatures, setMaterialFeatures] = useState<string[]>([
+    "Dishwasher Safe",
+    "Microwave Safe",
+  ]);
+  const [microwaveable, setMicrowaveable] = useState("Yes");
+  const [materialType, setMaterialType] = useState("Ceramic");
+  const [capacity, setCapacity] = useState("12");
+  const [capacityUnit, setCapacityUnit] = useState("fluid-ounces");
+  const [customerPackageType, setCustomerPackageType] = useState("Standard Packaging");
+  const [finishType, setFinishType] = useState("Glazed");
+  const [unitCount, setUnitCount] = useState("1");
+  const [unitCountType, setUnitCountType] = useState("count");
+  const [includedComponents, setIncludedComponents] = useState<string[]>([
+    "1 Ceramic Coffee Mug",
+  ]);
+  const [specificUses, setSpecificUses] = useState<string[]>([
+    "Coffee",
+    "Tea",
+    "Hot Chocolate",
+    "Home Use",
+    "Office Use",
+  ]);
+  const [teamName, setTeamName] = useState("");
+  const [recommendedUses, setRecommendedUses] = useState<string[]>([
+    "Coffee",
+    "Tea",
+    "Hot Chocolate",
+    "Beverages",
+    "Home Use",
+    "Office Use",
+    "Coffee Station",
+  ]);
+  const [embellishmentFeature, setEmbellishmentFeature] = useState("None");
+  const [reusability, setReusability] = useState("Reusable");
+  const [heightBaseToTop, setHeightBaseToTop] = useState("");
+  const [heightUnit, setHeightUnit] = useState("inches");
+  const [widthWidestPoint, setWidthWidestPoint] = useState("3.5");
+  const [widthUnit, setWidthUnit] = useState("inches");
+  const [drinkingCupFormType, setDrinkingCupFormType] = useState("Coffee Cup");
+  const [drinkingCupFormSubtype, setDrinkingCupFormSubtype] = useState("");
+  const [hasHandle, setHasHandle] = useState("Yes");
+  const [numberOfPacks, setNumberOfPacks] = useState("1");
+  const [itemWeight, setItemWeight] = useState("1");
+  const [itemWeightUnit, setItemWeightUnit] = useState("pounds");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [complianceNote, setComplianceNote] = useState("");
@@ -203,7 +445,9 @@ function ListingBuilder({
       : activeSection === "description"
         ? description.trim().length > 0
         : activeSection === "details"
-          ? [brand, material, color].every((value) => value.trim().length > 0)
+          ? [material, color, capacity, numberOfPacks, itemWeight].every(
+              (value) => value.trim().length > 0,
+            )
           : activeSection === "offer"
             ? [price, quantity].every((value) => value.trim().length > 0)
             : complianceNote.trim().length > 0;
@@ -600,10 +844,284 @@ function ListingBuilder({
 
     if (activeSection === "details") {
       return (
-        <div className="grid gap-5 md:grid-cols-2">
-          <BuilderField id="builder-brand" label="Brand" value={brand} onChange={setBrand} placeholder="Example: EVP Home" />
-          <BuilderField id="builder-material" label="Material" value={material} onChange={setMaterial} placeholder="Example: Cotton canvas" />
-          <BuilderField id="builder-color" label="Color" value={color} onChange={setColor} placeholder="Example: Navy blue" />
+        <div className="space-y-1">
+          <div className="border border-[#d3dde0] bg-[#fbfdfd] px-4 py-3">
+            <p className="text-xs font-semibold text-[#344650]">Product details</p>
+            <p className="mt-1 text-[10px] leading-4 text-[#68767e]">
+              Provide the attributes that help customers understand and find this drinking cup.
+              Values from the product details reference are prefilled and can be edited.
+            </p>
+          </div>
+
+          <AttributeRow
+            label="Age Range Description"
+            description="Provide the intended age range for the drinking cup, indicating the appropriate user group for the item."
+            required
+          >
+            <AttributeInput id="age-range-description" value={ageRangeDescription} onChange={setAgeRangeDescription} />
+          </AttributeRow>
+          <AttributeRow
+            label="Material"
+            description="Specify the primary materials used for manufacturing the item."
+            required
+          >
+            <AttributeInput id="material" value={material} onChange={setMaterial} />
+            <button type="button" className="mt-1 text-[10px] font-semibold text-[#24717d] hover:underline">
+              Add more
+            </button>
+          </AttributeRow>
+          <AttributeRow
+            label="Pattern"
+            description="Provide the decorative pattern that appears on the surface, such as checked, floral, or geometric designs."
+          >
+            <AttributeInput id="material-pattern" value={materialPattern} onChange={setMaterialPattern} />
+          </AttributeRow>
+          <AttributeRow
+            label="Number of Items"
+            description="Provide the total number of identical items in the selling unit to the customer."
+            required
+          >
+            <AttributeInput id="number-of-items" value={numberOfItems} onChange={setNumberOfItems} />
+          </AttributeRow>
+          <AttributeRow
+            label="Subject Character"
+            description="Provide the main character depicted on the drinking cup, such as a fictional or real person featured in the cup's design."
+          >
+            <AttributeInput
+              id="subject-character"
+              value={subjectCharacter}
+              onChange={setSubjectCharacter}
+              placeholder="Example: Batman"
+              multiline
+            />
+          </AttributeRow>
+          <AttributeRow label="Color" description="Provide the color of the product." required>
+            <AttributeInput id="color" value={color} onChange={setColor} />
+          </AttributeRow>
+          <AttributeRow label="Size" description="Provide the size of the item." required>
+            <AttributeInput id="size" value={size} onChange={setSize} />
+          </AttributeRow>
+          <AttributeRow label="Item Shape" description="Specify the shape of the item.">
+            <AttributeInput id="item-shape" value={itemShape} onChange={setItemShape} />
+          </AttributeRow>
+          <AttributeRow label="Theme" description="Provide the primary high-level subject, concept, topic, motif, or idea of an item.">
+            <MultiValueField id="themes" values={themes} onChange={setThemes} />
+          </AttributeRow>
+
+          <AttributeRow
+            label="Care Instructions"
+            description="Provide instructions related to how to care for the item."
+            required
+          >
+            <MultiValueField id="care-instructions" values={careInstructions} onChange={setCareInstructions} />
+          </AttributeRow>
+          <AttributeRow
+            label="Is the item dishwasher safe?"
+            description="If the item is dishwasher safe select yes, if it is not select no."
+            required
+          >
+            <YesNoField id="dishwasher-safe" value={dishwasherSafe} onChange={setDishwasherSafe} />
+          </AttributeRow>
+          <AttributeRow
+            label="Material Features"
+            description="Provide the special qualities of the material used, such as compostability, biodegradability, or food safety features."
+          >
+            <MultiValueField id="material-features" values={materialFeatures} onChange={setMaterialFeatures} />
+          </AttributeRow>
+          <AttributeRow
+            label="Is the item microwaveable?"
+            description="If the item is microwaveable select yes, if it is not select no."
+            required
+          >
+            <YesNoField id="microwaveable" value={microwaveable} onChange={setMicrowaveable} />
+          </AttributeRow>
+          <AttributeRow
+            label="Material Type"
+            description="Provide the materials specifically excluded from the drinking cup, indicating substances not used in its construction or content."
+          >
+            <AttributeInput id="material-type" value={materialType} onChange={setMaterialType} />
+            <button type="button" className="mt-1 text-[10px] font-semibold text-[#24717d] hover:underline">
+              Add more
+            </button>
+          </AttributeRow>
+          <AttributeRow label="Capacity" description="The capacity of the item." required>
+            <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+              <AttributeInput id="capacity" value={capacity} onChange={setCapacity} />
+              <AttributeSelect
+                id="capacity-unit"
+                value={capacityUnit}
+                onChange={setCapacityUnit}
+                options={[
+                  { value: "fluid-ounces", label: "Fluid Ounces" },
+                  { value: "milliliters", label: "Milliliters" },
+                  { value: "cups", label: "Cups" },
+                ]}
+              />
+            </div>
+          </AttributeRow>
+
+          <AttributeRow
+            label="Customer Package Type"
+            description="Provide the type of packaging the item is sold in, indicating how the product is presented to the customer."
+          >
+            <AttributeInput id="customer-package-type" value={customerPackageType} onChange={setCustomerPackageType} multiline />
+          </AttributeRow>
+          <AttributeRow
+            label="Pattern"
+            description="Provide the most prominent repeated decorative design of the item."
+          >
+            <AttributeInput id="package-pattern" value={packagePattern} onChange={setPackagePattern} />
+          </AttributeRow>
+          <AttributeRow label="Finish Type" description="Specify the finish of the product's exterior surface.">
+            <AttributeInput id="finish-type" value={finishType} onChange={setFinishType} />
+          </AttributeRow>
+          <AttributeRow
+            label="Unit Count"
+            description="For products that are consumed by volume, weight, linear dimension, etc., provide the net quantity that would be shipped to a customer."
+            required
+          >
+            <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+              <AttributeInput id="unit-count" value={unitCount} onChange={setUnitCount} />
+              <AttributeSelect
+                id="unit-count-type"
+                value={unitCountType}
+                onChange={setUnitCountType}
+                options={[
+                  { value: "count", label: "Count" },
+                  { value: "fluid-ounces", label: "Fluid Ounces" },
+                  { value: "pounds", label: "Pounds" },
+                ]}
+              />
+            </div>
+          </AttributeRow>
+          <AttributeRow
+            label="Included Components"
+            description="Specify the items that are included with this product."
+            required
+          >
+            <MultiValueField id="included-components" values={includedComponents} onChange={setIncludedComponents} />
+          </AttributeRow>
+          <AttributeRow
+            label="Specific Uses for Product"
+            description="Select from the list of suggested values the conditions, or usages for which the product is specifically intended."
+            required
+          >
+            <MultiValueField id="specific-uses" values={specificUses} onChange={setSpecificUses} />
+          </AttributeRow>
+          <AttributeRow
+            label="Team Name"
+            description="Provide the name of the sports team associated with the drinking cup, representing the team's branding or logo featured on the product."
+          >
+            <AttributeInput id="team-name" value={teamName} onChange={setTeamName} placeholder="Example: Seattle Seahawks" />
+          </AttributeRow>
+          <AttributeRow
+            label="Recommended Uses For Product"
+            description="Specify the recommended uses for the product."
+          >
+            <MultiValueField id="recommended-uses" values={recommendedUses} onChange={setRecommendedUses} />
+          </AttributeRow>
+          <AttributeRow
+            label="Embellishment Feature"
+            description="Provide the decorative element or ornamental detail added to enhance the appearance, such as patterns, textures, or attachments."
+          >
+            <AttributeInput id="embellishment-feature" value={embellishmentFeature} onChange={setEmbellishmentFeature} />
+            <button type="button" className="mt-1 text-[10px] font-semibold text-[#24717d] hover:underline">
+              Add more
+            </button>
+          </AttributeRow>
+          <AttributeRow
+            label="Reusability"
+            description="Provide the intended usage duration, indicating whether the item is designed for single use or multiple uses."
+          >
+            <AttributeInput id="reusability" value={reusability} onChange={setReusability} />
+          </AttributeRow>
+
+          <AttributeRow
+            label="Item Dimensions W x H"
+            description="Provide the width and height measurements, indicating the overall size dimensions of the container."
+            required
+          >
+            <div className="space-y-2">
+              <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                <AttributeInput id="height-base-to-top" value={heightBaseToTop} onChange={setHeightBaseToTop} placeholder="Example: 40" />
+                <AttributeSelect
+                  id="height-unit"
+                  value={heightUnit}
+                  onChange={setHeightUnit}
+                  options={[
+                    { value: "inches", label: "Inches" },
+                    { value: "centimeters", label: "Centimeters" },
+                  ]}
+                />
+              </div>
+              <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                <AttributeInput id="width-widest-point" value={widthWidestPoint} onChange={setWidthWidestPoint} />
+                <AttributeSelect
+                  id="width-unit"
+                  value={widthUnit}
+                  onChange={setWidthUnit}
+                  options={[
+                    { value: "inches", label: "Inches" },
+                    { value: "centimeters", label: "Centimeters" },
+                  ]}
+                />
+              </div>
+            </div>
+          </AttributeRow>
+          <AttributeRow
+            label="Drinking Cup Form"
+            description="Provide the physical form of the drinking cup. Drinking cup forms are based on the overall structure and shape of the cup."
+            required
+          >
+            <div className="space-y-2">
+              <AttributeSelect
+                id="drinking-cup-form-type"
+                value={drinkingCupFormType}
+                onChange={setDrinkingCupFormType}
+                options={[
+                  { value: "coffee-cup", label: "Coffee Cup" },
+                  { value: "travel-mug", label: "Travel Mug" },
+                  { value: "tumbler", label: "Tumbler" },
+                ]}
+              />
+              <AttributeSelect
+                id="drinking-cup-form-subtype"
+                value={drinkingCupFormSubtype}
+                onChange={setDrinkingCupFormSubtype}
+                placeholder="Example: Pilsner"
+                options={[
+                  { value: "pilsner", label: "Pilsner" },
+                  { value: "latte", label: "Latte" },
+                  { value: "espresso", label: "Espresso" },
+                ]}
+              />
+            </div>
+          </AttributeRow>
+          <AttributeRow label="Has Handle" description="Provide whether the item has a handle for grip and portability." required>
+            <YesNoField id="has-handle" value={hasHandle} onChange={setHasHandle} />
+          </AttributeRow>
+          <AttributeRow
+            label="Number of Packs"
+            description="Provide the count of inner packs included in an item. For a single pack or packed assortment of non-identical items, enter 1."
+            required
+          >
+            <AttributeInput id="number-of-packs" value={numberOfPacks} onChange={setNumberOfPacks} />
+          </AttributeRow>
+          <AttributeRow label="Item Weight" description="Provide the weight of the item (not including the packaging)." required>
+            <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+              <AttributeInput id="item-weight" value={itemWeight} onChange={setItemWeight} />
+              <AttributeSelect
+                id="item-weight-unit"
+                value={itemWeightUnit}
+                onChange={setItemWeightUnit}
+                options={[
+                  { value: "pounds", label: "Pounds" },
+                  { value: "ounces", label: "Ounces" },
+                  { value: "kilograms", label: "Kilograms" },
+                ]}
+              />
+            </div>
+          </AttributeRow>
         </div>
       );
     }
@@ -694,9 +1212,13 @@ function ListingBuilder({
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block text-xs font-semibold">{section.label}</span>
-                    {section.id === "identity" && (
+                  {(section.id === "identity" || section.id === "details") && (
                       <span className="mt-0.5 block text-[10px] text-current opacity-75">
-                        {completedCount(section.id)} of {section.required}
+                        {section.id === "details"
+                          ? completedSections.includes(section.id)
+                            ? "21 of 21 Attributes"
+                            : "17 of 21 Attributes"
+                          : `${completedCount(section.id)} of ${section.required}`}
                       </span>
                     )}
                   </span>
